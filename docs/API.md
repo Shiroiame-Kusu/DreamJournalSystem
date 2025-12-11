@@ -2,7 +2,7 @@
 
 ## 概述
 
-- **基础URL**: `http://localhost:8080/api/v1`
+- **基础URL**: `http://localhost:8080/api`
 - **数据格式**: JSON
 - **认证方式**: JWT Bearer Token
 - **字符编码**: UTF-8

@@ -1,0 +1,112 @@
+// Sakurairo 樱落主题配色变量
+
+// 主色调
+$primary: #FFB7C5;
+$primary-light: #FFD1DC;
+$primary-dark: #FF91A4;
+
+// 次色调
+$secondary: #E0BBE4;
+$secondary-light: #F0D9FF;
+$secondary-dark: #C99AD9;
+
+// 强调色
+$accent: #B8A9C9;
+$accent-light: #D4C8E0;
+$accent-dark: #9B8AB8;
+
+// 背景色
+$background: #FFF9FA;
+$background-card: rgba(255, 255, 255, 0.75);
+$background-glass: rgba(255, 255, 255, 0.45);
+
+// 文字颜色
+$text-primary: #4A4A4A;
+$text-secondary: #7A7A7A;
+$text-light: #9A9A9A;
+$text-on-primary: #FFFFFF;
+
+// 状态颜色
+$success: #A8E6CF;
+$warning: #FFD3A5;
+$error: #FF8A8A;
+$info: #B8D4E3;
+
+// 边框和阴影
+$border-color: rgba(255, 183, 197, 0.3);
+$shadow-color: rgba(255, 183, 197, 0.2);
+
+// 渐变
+$gradient-sakura: linear-gradient(135deg, #FFB7C5 0%, #E0BBE4 100%);
+$gradient-soft-pink: linear-gradient(135deg, #FFD1DC 0%, #FFB7C5 100%);
+$gradient-lavender: linear-gradient(135deg, #E0BBE4 0%, #B8A9C9 100%);
+$gradient-dreamy: linear-gradient(135deg, #FFF9FA 0%, #F0D9FF 50%, #FFD1DC 100%);
+
+// 字体
+$font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-family-serif: 'Noto Serif SC', 'Songti SC', serif;
+
+// 字号
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+$font-size-4xl: 36px;
+
+// 圆角
+$border-radius-sm: 8px;
+$border-radius: 12px;
+$border-radius-lg: 16px;
+$border-radius-xl: 20px;
+$border-radius-full: 9999px;
+
+// 阴影
+$shadow-sm: 0 2px 8px $shadow-color;
+$shadow: 0 4px 16px $shadow-color;
+$shadow-lg: 0 8px 32px $shadow-color;
+$shadow-xl: 0 12px 48px $shadow-color;
+
+// 过渡
+$transition-fast: 0.15s ease;
+$transition: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// 断点
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// 玻璃拟态混入
+@mixin glass-morphism($opacity: 0.85) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+@mixin card-glass {
+  @include glass-morphism(0.75);
+  border-radius: $border-radius-xl;
+  padding: 24px;
+}
+
+// 响应式混入
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: $breakpoint-2xl) { @content; }
+  }
+}
