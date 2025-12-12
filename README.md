@@ -48,7 +48,7 @@
 - **状态管理**: Pinia 2.1
 - **路由**: Vue Router 4.2
 - **HTTP 客户端**: Axios
-- **样式**: SCSS + Sakurairo 设计系统
+- **样式**: SCSS + Sakurairo Style
 
 ### 后端
 - **框架**: Spring Boot 3.2.1
@@ -123,8 +123,6 @@ cd DreamJournalSystem
 ```sql
 CREATE DATABASE dream_journal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
-
-2. 执行数据库初始化脚本（参考 `docs/DATABASE.md`）
 
 ### 3. 配置后端
 
@@ -240,23 +238,7 @@ java -jar target/dream-journal-system-1.0.0.jar
 
 ## 📄 许可证
 
-本项目采用 [MIT 许可证](LICENSE)
-
-## 🤝 贡献指南
-
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
-
-## 📞 联系方式
-
-如有问题或建议，请通过以下方式联系：
-
-- **Issue**: [GitHub Issues](https://github.com/Shiroiame-Kusu/DreamJournalSystem/issues)
+本项目采用 [GPL-3.0 许可证](LICENSE)
 
 ---
 
