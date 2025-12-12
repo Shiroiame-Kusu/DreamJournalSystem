@@ -18,7 +18,7 @@ const form = reactive({
   content: '',
   dreamDate: new Date().toISOString().split('T')[0],
   mood: '',
-  sleepQuality: 3,
+  sleepQuality: 'FAIR' as string,
   tags: [] as string[],
   visibility: 'private' as 'private' | 'public'
 })
@@ -91,10 +91,10 @@ async function handleSubmit() {
       title: form.title.trim(),
       content: form.content.trim(),
       dreamDate: form.dreamDate,
-      mood: form.mood || undefined,
-      sleepQuality: form.sleepQuality,
+      moodBeforeSleep: form.mood as any || undefined,
+      sleepQuality: form.sleepQuality as any || undefined,
       tags: form.tags.length > 0 ? form.tags : undefined,
-      visibility: form.visibility
+      isPrivate: form.visibility === 'private'
     })
     
     router.push(`/dreams/${dream.id}`)

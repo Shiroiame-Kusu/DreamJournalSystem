@@ -1,5 +1,16 @@
 import apiClient from './client'
-import type { Dream, DreamRequest, PageResponse, AISummary } from '@/types'
+import type { Dream, DreamRequest } from '@/types'
+
+// 后端分页响应格式
+interface DreamPageResponse {
+  content: Dream[]
+  totalElements: number
+  totalPages: number
+  currentPage: number
+  pageSize: number
+  hasNext: boolean
+  hasPrevious: boolean
+}
 
 export const dreamApi = {
   // 获取梦境列表
@@ -10,7 +21,7 @@ export const dreamApi = {
     startDate?: string
     endDate?: string
     mood?: string
-  }): Promise<PageResponse<Dream>> {
+  }): Promise<DreamPageResponse> {
     return apiClient.get('/dreams', { params })
   },
 
@@ -40,7 +51,7 @@ export const dreamApi = {
   },
 
   // 获取收藏列表
-  getFavorites(): Promise<PageResponse<Dream>> {
+  getFavorites(): Promise<Dream[]> {
     return apiClient.get('/dreams/favorites')
   },
 

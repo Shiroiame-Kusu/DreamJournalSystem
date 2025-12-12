@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Dream, DreamRequest, PageResponse } from '@/types'
+import type { Dream, DreamRequest } from '@/types'
 import { dreamApi } from '@/api/dream'
 
 export const useDreamStore = defineStore('dream', () => {
@@ -22,17 +22,19 @@ export const useDreamStore = defineStore('dream', () => {
   async function fetchDreams(page = 0, size = 10, keyword?: string) {
     loading.value = true
     try {
-      const params: any = { page, size }
+      // 后端 page 从 1 开始，前端从 0 开始，需要 +1
+      const params: any = { page: page + 1, size }
       if (keyword) {
         params.keyword = keyword
         searchKeyword.value = keyword
       }
       
-      const response: PageResponse<Dream> = await dreamApi.getDreams(params)
-      dreams.value = response.content
-      totalPages.value = response.totalPages
-      totalElements.value = response.totalElements
-      currentPage.value = response.number
+      const response = await dreamApi.getDreams(params)
+      dreams.value = response.content || []
+      totalPages.value = response.totalPages || 0
+      totalElements.value = response.totalElements || 0
+      // 后端返回 currentPage（从1开始），转换为前端的页码（从0开始）
+      currentPage.value = ((response as any).currentPage || 1) - 1
       return response
     } catch (error) {
       console.error('获取梦境列表失败:', error)
@@ -115,29 +117,31 @@ export const useDreamStore = defineStore('dream', () => {
   // 切换收藏状态
   async function toggleFavorite(id: number) {
     try {
-      const dream = await dreamApi.toggleFavorite(id)
+      const result = await dreamApi.toggleFavorite(id)
+      const isFavorite = result.isFavorite
       
       // 更新列表中的梦境
       const index = dreams.value.findIndex(d => d.id === id)
       if (index !== -1) {
-        dreams.value[index] = dream
+        dreams.value[index] = { ...dreams.value[index], isFavorite }
       }
       
       // 更新当前梦境
       if (currentDream.value?.id === id) {
-        currentDream.value = dream
+        currentDream.value = { ...currentDream.value, isFavorite }
       }
       
       // 更新收藏列表
-      if (dream.isFavorite) {
-        if (!favorites.value.find(f => f.id === id)) {
-          favorites.value.push(dream)
+      if (isFavorite) {
+        const dreamToAdd = dreams.value.find(d => d.id === id)
+        if (dreamToAdd && !favorites.value.find(f => f.id === id)) {
+          favorites.value.push(dreamToAdd)
         }
       } else {
         favorites.value = favorites.value.filter(f => f.id !== id)
       }
       
-      return dream
+      return result
     } catch (error) {
       console.error('切换收藏状态失败:', error)
       throw error
@@ -149,7 +153,8 @@ export const useDreamStore = defineStore('dream', () => {
     loading.value = true
     try {
       const response = await dreamApi.getFavorites()
-      favorites.value = response.content
+      // 后端直接返回 Dream[] 数组
+      favorites.value = Array.isArray(response) ? response : []
       return response
     } catch (error) {
       console.error('获取收藏列表失败:', error)

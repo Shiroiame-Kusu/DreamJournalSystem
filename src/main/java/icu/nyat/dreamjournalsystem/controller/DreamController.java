@@ -120,7 +120,7 @@ public class DreamController {
      * 更新梦境记录
      */
     @PutMapping("/{id}")
-    public ApiResponse<Dream> updateDream(@PathVariable Long id,
+    public ApiResponse<Dream> updateDream(@PathVariable("id") Long id,
                                           @Valid @RequestBody DreamRequest request,
                                           @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
@@ -132,7 +132,7 @@ public class DreamController {
      * 删除梦境记录
      */
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteDream(@PathVariable Long id,
+    public ApiResponse<Void> deleteDream(@PathVariable("id") Long id,
                                          @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
         dreamService.deleteDream(id, userId);
@@ -143,7 +143,7 @@ public class DreamController {
      * 切换收藏状态
      */
     @PutMapping("/{id}/favorite")
-    public ApiResponse<Map<String, Boolean>> toggleFavorite(@PathVariable Long id,
+    public ApiResponse<Map<String, Boolean>> toggleFavorite(@PathVariable("id") Long id,
                                                             @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
         boolean isFavorite = dreamService.toggleFavorite(id, userId);
@@ -158,7 +158,7 @@ public class DreamController {
      * 重新生成AI总结
      */
     @PostMapping("/{id}/ai-summary/regenerate")
-    public ApiResponse<Map<String, Object>> regenerateAISummary(@PathVariable Long id,
+    public ApiResponse<Map<String, Object>> regenerateAISummary(@PathVariable("id") Long id,
                                                                 @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
         dreamService.regenerateAISummary(id, userId);

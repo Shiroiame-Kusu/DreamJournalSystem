@@ -43,9 +43,15 @@ function formatDate(dateStr: string) {
   })
 }
 
-function getSleepQualityText(quality?: number) {
-  const texts = ['', '很差', '较差', '一般', '较好', '很好']
-  return quality ? texts[quality] : ''
+function getSleepQualityText(quality?: string) {
+  const qualityMap: Record<string, string> = {
+    'TERRIBLE': '很差',
+    'POOR': '较差',
+    'FAIR': '一般',
+    'GOOD': '较好',
+    'EXCELLENT': '很好'
+  }
+  return quality ? qualityMap[quality] || '' : ''
 }
 
 async function handleToggleFavorite() {
@@ -151,8 +157,8 @@ function goBack() {
           <SakuraCard variant="glass" padding="lg" class="dream-detail-view__content">
             <header class="dream-detail-view__header">
               <div class="dream-detail-view__meta">
-                <span v-if="getMoodInfo(dream.mood)" class="dream-detail-view__mood">
-                  {{ getMoodInfo(dream.mood)?.emoji }} {{ getMoodInfo(dream.mood)?.label }}
+                <span v-if="getMoodInfo(dream.moodBeforeSleep)" class="dream-detail-view__mood">
+                  {{ getMoodInfo(dream.moodBeforeSleep)?.emoji }} {{ getMoodInfo(dream.moodBeforeSleep)?.label }}
                 </span>
                 <span class="dream-detail-view__date">{{ formatDate(dream.dreamDate) }}</span>
                 <span v-if="dream.sleepQuality" class="dream-detail-view__quality">

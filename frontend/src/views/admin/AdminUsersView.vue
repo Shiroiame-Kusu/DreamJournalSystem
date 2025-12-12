@@ -31,7 +31,7 @@ async function fetchUsers() {
   try {
     const response = await apiClient.get('/admin/users', {
       params: searchKeyword.value ? { keyword: searchKeyword.value } : undefined
-    })
+    }) as any
     users.value = response.content || response
   } catch (error: any) {
     errorMessage.value = error.response?.data?.message || '获取用户列表失败'
@@ -61,18 +61,18 @@ async function handleToggleBan() {
   errorMessage.value = ''
   
   try {
-    const newStatus = selectedUser.value.status === 'active' ? 'banned' : 'active'
+    const newStatus = selectedUser.value.status === 'ACTIVE' ? 'BANNED' : 'ACTIVE'
     await apiClient.put(`/admin/users/${selectedUser.value.id}/status`, {
       status: newStatus
     })
     
-    selectedUser.value.status = newStatus
+    selectedUser.value.status = newStatus as 'ACTIVE' | 'INACTIVE' | 'BANNED'
     const index = users.value.findIndex(u => u.id === selectedUser.value!.id)
     if (index !== -1) {
-      users.value[index].status = newStatus
+      users.value[index].status = newStatus as 'ACTIVE' | 'INACTIVE' | 'BANNED'
     }
     
-    successMessage.value = newStatus === 'banned' ? '用户已被禁用' : '用户已解禁'
+    successMessage.value = newStatus === 'BANNED' ? '用户已被禁用' : '用户已解禁'
     showBanModal.value = false
   } catch (error: any) {
     errorMessage.value = error.response?.data?.message || '操作失败'
@@ -193,27 +193,27 @@ function formatDate(dateStr: string) {
                 <td>{{ user.email }}</td>
                 <td>
                   <span class="role-badge" :class="`role-badge--${user.role}`">
-                    {{ user.role === 'admin' ? '管理员' : '用户' }}
+                    {{ user.role === 'ADMIN' ? '管理员' : '用户' }}
                   </span>
                 </td>
                 <td>
                   <span class="status-badge" :class="`status-badge--${user.status}`">
-                    {{ user.status === 'active' ? '正常' : '已禁用' }}
+                    {{ user.status === 'ACTIVE' ? '正常' : '已禁用' }}
                   </span>
                 </td>
                 <td>{{ formatDate(user.createdAt) }}</td>
                 <td>
                   <div class="action-buttons">
                     <SakuraButton
-                      v-if="user.role !== 'admin'"
-                      :variant="user.status === 'active' ? 'outline' : 'secondary'"
+                      v-if="user.role !== 'ADMIN'"
+                      :variant="user.status === 'ACTIVE' ? 'outline' : 'secondary'"
                       size="sm"
                       @click="openBanModal(user)"
                     >
-                      {{ user.status === 'active' ? '禁用' : '解禁' }}
+                      {{ user.status === 'ACTIVE' ? '禁用' : '解禁' }}
                     </SakuraButton>
                     <SakuraButton
-                      v-if="user.role !== 'admin'"
+                      v-if="user.role !== 'ADMIN'"
                       variant="danger"
                       size="sm"
                       @click="openDeleteModal(user)"
@@ -232,7 +232,7 @@ function formatDate(dateStr: string) {
     <!-- 禁用/解禁确认弹窗 -->
     <SakuraModal v-model="showBanModal" title="确认操作" width="400px">
       <p v-if="selectedUser">
-        确定要{{ selectedUser.status === 'active' ? '禁用' : '解禁' }}用户 
+        确定要{{ selectedUser.status === 'ACTIVE' ? '禁用' : '解禁' }}用户 
         <strong>{{ selectedUser.username }}</strong> 吗？
       </p>
       
@@ -241,7 +241,7 @@ function formatDate(dateStr: string) {
           取消
         </SakuraButton>
         <SakuraButton 
-          :variant="selectedUser?.status === 'active' ? 'danger' : 'primary'"
+          :variant="selectedUser?.status === 'ACTIVE' ? 'danger' : 'primary'"
           :loading="actionLoading"
           @click="handleToggleBan"
         >

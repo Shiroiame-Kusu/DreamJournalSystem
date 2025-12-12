@@ -57,21 +57,30 @@ function formatDate(dateStr: string) {
 
 function getMoodEmoji(mood?: string) {
   const moodMap: Record<string, string> = {
-    happy: '😊',
-    peaceful: '😌',
-    anxious: '😰',
-    sad: '😢',
-    scared: '😨',
-    confused: '😕',
-    excited: '🤩',
-    neutral: '😶'
+    HAPPY: '😊',
+    CALM: '😌',
+    ANXIOUS: '😰',
+    SAD: '😢',
+    STRESSED: '😣',
+    EXCITED: '🤩',
+    TIRED: '😴',
+    CONFUSED: '😕',
+    REFRESHED: '🌟'
   }
   return mood ? moodMap[mood] || '🌙' : '🌙'
 }
 
-function getSleepQualityStars(quality?: number) {
+function getSleepQualityStars(quality?: string) {
   if (!quality) return ''
-  return '★'.repeat(quality) + '☆'.repeat(5 - quality)
+  const qualityMap: Record<string, number> = {
+    'TERRIBLE': 1,
+    'POOR': 2,
+    'FAIR': 3,
+    'GOOD': 4,
+    'EXCELLENT': 5
+  }
+  const stars = qualityMap[quality] || 3
+  return '★'.repeat(stars) + '☆'.repeat(5 - stars)
 }
 </script>
 
@@ -144,7 +153,7 @@ function getSleepQualityStars(quality?: number) {
             @click="goToDetail(dream.id)"
           >
             <div class="dream-card__header">
-              <span class="dream-card__mood">{{ getMoodEmoji(dream.mood) }}</span>
+              <span class="dream-card__mood">{{ getMoodEmoji(dream.moodBeforeSleep) }}</span>
               <button 
                 class="dream-card__favorite"
                 :class="{ 'is-favorited': dream.isFavorite }"

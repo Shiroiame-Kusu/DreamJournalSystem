@@ -35,14 +35,15 @@ function formatDate(dateStr: string) {
 
 function getMoodEmoji(mood?: string) {
   const moodMap: Record<string, string> = {
-    happy: '😊',
-    peaceful: '😌',
-    anxious: '😰',
-    sad: '😢',
-    scared: '😨',
-    confused: '😕',
-    excited: '🤩',
-    neutral: '😶'
+    HAPPY: '😊',
+    CALM: '😌',
+    ANXIOUS: '😰',
+    SAD: '😢',
+    STRESSED: '😣',
+    EXCITED: '🤩',
+    TIRED: '😴',
+    CONFUSED: '😕',
+    REFRESHED: '🌟'
   }
   return mood ? moodMap[mood] || '🌙' : '🌙'
 }
@@ -89,7 +90,7 @@ function getMoodEmoji(mood?: string) {
             @click="goToDetail(dream.id)"
           >
             <div class="favorite-card__header">
-              <span class="favorite-card__mood">{{ getMoodEmoji(dream.mood) }}</span>
+              <span class="favorite-card__mood">{{ getMoodEmoji(dream.moodBeforeSleep) }}</span>
               <button 
                 class="favorite-card__favorite"
                 @click="handleToggleFavorite(dream.id, $event)"
